@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -rf build
+rm -rf dist
+rm -rf nuitka
+rm -rf *.spec

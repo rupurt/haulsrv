@@ -1,0 +1,14 @@
+.coverage
+.ruff_cache
+.venv
+__pycache__/
+*.egg-info/
+
+# pypi
+dist
+
+# nuitka
+nuitka
+
+# haulsrv
+haulsrv.yaml

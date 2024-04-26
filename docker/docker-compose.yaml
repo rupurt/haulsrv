@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  haulsrv:
+    image: rupurt/haulsrv:latest
+    ports:
+      - "8080:8080"
+      - "8081:8081"
