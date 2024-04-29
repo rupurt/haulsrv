@@ -31,6 +31,7 @@ class Settings(BaseSettings):
     api: ApiSettings = Field(default_factory=ApiSettings)
     ui: UiSettings = Field(default_factory=UiSettings)
     log_level: LogLevel = Field(default=LogLevel.INFO)
+    use_reloader: bool = Field(default=False)
 
     @classmethod
     def settings_customise_sources(

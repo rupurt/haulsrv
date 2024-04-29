@@ -3,9 +3,11 @@ from pathlib import Path
 import typer
 from typerutils import LogLevel
 from typing_extensions import Annotated
+from quartutils import TaskServerConfig
 
 from haulsrv.cli import app
-from haulsrv.core import Server, ServerConfig
+
+from haulsrv.core import HaulServer, WorkerClass
 from haulsrv.settings import default_config, read_settings
 
 
@@ -18,7 +20,6 @@ def conf_callback(
     if value:
         try:
             settings = read_settings(Path(value))
-            print(settings)
             default_map = {
                 "api_host": settings.api.host,
                 "api_port": settings.api.port,
@@ -27,6 +28,7 @@ def conf_callback(
                 "ui_port": settings.ui.port,
                 "ui_enabled": settings.ui.enabled,
                 "log_level": settings.log_level,
+                "use_reloader": settings.use_reloader,
             }
             ctx.default_map.update(default_map)
         except Exception:
@@ -66,6 +68,12 @@ def start(
             help="log level to use in servers",
         ),
     ],
+    use_reloader: Annotated[
+        bool,
+        typer.Option(
+            help="todo...",
+        ),
+    ] = True,
     api_enabled: Annotated[
         bool,
         typer.Option(
@@ -87,7 +95,31 @@ def start(
         ),
     ] = default_config,
 ):
-    api = ServerConfig(api_host, api_port, api_enabled)
-    ui = ServerConfig(ui_host, ui_port, ui_enabled)
-    server = Server(api=api, ui=ui, log_level=log_level)
-    server.serve()
+    # api = ServerConfig(api_host, api_port, api_enabled)
+    # ui = ServerConfig(ui_host, ui_port, ui_enabled)
+    # server = Server(api=api, ui=ui, log_level=log_level)
+    # server.serve()
+
+    api_config = None
+    ui_config = None
+    if api_enabled:
+        api_config = TaskServerConfig(
+            host=api_host,
+            port=api_port,
+            log_level=log_level.value,
+            use_reloader=use_reloader,
+            worker_class=WorkerClass.UVLOOP,
+        )
+    if ui_enabled:
+        ui_config = TaskServerConfig(
+            host=ui_host,
+            port=ui_port,
+            log_level=log_level.value,
+            use_reloader=use_reloader,
+            worker_class=WorkerClass.UVLOOP,
+        )
+    haul_server = HaulServer(
+        api_config=api_config,
+        ui_config=ui_config,
+    )
+    haul_server.serve()

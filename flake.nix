@@ -41,6 +41,7 @@
                 setuptools
               ]))
             uv
+            nodejs
           ]
           ++ pkgs.lib.optionals (pkgs.stdenv.isLinux) [
             pythonManylinuxPackages.manylinux1

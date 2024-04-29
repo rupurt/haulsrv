@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build_tailwind": "npx tailwindcss -i ./input.css -o ./src/haulsrv/core/ui/static/tailwind.css --watch"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "franken-ui": "^0.0.8",
+    "postcss-sort-media-queries": "^5.2.0",
+    "tailwindcss": "^3.4.3"
+  }
+}

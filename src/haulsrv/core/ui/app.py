@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from quart import Quart
+from quart import Quart, render_template
 
 app = Quart(__name__)
 
 
 @app.get("/")
-async def hello():
-    return "hello world! - UI"
+async def root():
+    return await render_template('index.html', hello='world')
 
 
 @app.get("/probes/live")
